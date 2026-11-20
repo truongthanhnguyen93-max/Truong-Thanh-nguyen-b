@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Điều khiển">
+<meta name="theme-color" content="#0f1115">
+<title>Điều khiển iPhone</title>
+<link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAIAAACyr5FlAAADv0lEQVR4Xu3bUU7bUBCG0VDxjlDFChDspVKXW6l7AbGE7qFCrlKTxI4nseHOnXMeW1rs5OezCeHm7v5hB6d887AwxTgwDuKUA+UgTjlQDuKUA+UgTjlQDuKUA+UgTjlQDuKUA+UgTjlQDuKUA+Ug7jb+Txry8vrW0NFMeH56bP8gT7rJ+KsJKTZxLN1Kko0j6SzGEk0k0w1pB8vY7TKdRY5y9DGLA+0nJEE5ulxGioQkGAdfpfVx9JqNQeNn1/Q9x5LHrvErd+pTSPwiWOOzGAwHuWQiDWq3HDMPaIpZHEt3Rq3fc/CF8o0jaTb2l5hEGh1H0ov0xdo830bHMSVvNsb3p1kkGwefyTiYZBwYB3HKgXIQpxwoB3HKgXIQpxwoB3HKgXIQpxwoB3HKgXIQpxwoB3HKgXIQpxwoB3HKgXLsdt9//TCEkFrlsI+QWuMY+mEiC5Ubx8A+lig6DglZou44JOSs6uOQkBnGISFe51jAXeoB5fjAN7pjxnGChAyM4zQJMY4ziidEOc7vo+xEjGORmvswjqUK7sM4AqrdpRpHWJ2EGMcliiTEOC7XfUKM4yp9J8Q4VtBrQoxjHV3uwzhW098lxjhW1lNCjGN93STEOLbSQUKMY0PZE2Icm8ubEOPY3J+fvzf/HNu43ea/5V3eWQyUYyvZl7HbKccGOpiFcmyim2Uox5p6moVyrKm/ZbghXUeXy3BZuVavs3BZuVbfy1COC3U/C+W4UJFlKEdMnVkoR0y1ZfhWdqmCy3BZOa/mLFxWzqu8DOWYVHwWymEZZ3gn2AeCMeadYP9ZxgHj+McyjrmsmMWk6uUQjBl1y2EWZxUth2UsUa4cZrFcrXJYRkihcVhGVKFxEGUceJ2DOOVAOYhTDpSDOOVAOYhTDpSDOOVAOYhTDpSDOOVgUrm3CU55eX0b/9Xz06PVKMe7g2Wc/JOCjOPEMgbHi6mm+jjmF1B8H6XHseS5X/IxvSo9DuYZB5OMA+MgLlk51r09XPJK15KPWW7d499ao+NY9ymZMf+JGjmMr9LoOGas/sU3tYDVl7H6kW8t3zi2cLyD1ZeR0c3d/UOzxz3/pZbo+Ut6Iol/Kjs84o1PJN2lZKzpclT46VfL4279nqPlx+56jZ9d6+PgCyUYR+NfXhdr/7xav+cYS31zN9b+LAYJyrGX5TGdl+gsMpVjL2lCEs1ikHIcuVaSbhN7ucfBpjLdc/DJjINJxoFxEKccKAdxyoFyEKccKAdxyoFyEKccKAdxyoFyEKccKAdxyoFyEPcXUZ7ZudL4EakAAAAASUVORK5CYII=">
+<link rel="icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAIAAACyr5FlAAADv0lEQVR4Xu3bUU7bUBCG0VDxjlDFChDspVKXW6l7AbGE7qFCrlKTxI4nseHOnXMeW1rs5OezCeHm7v5hB6d887AwxTgwDuKUA+UgTjlQDuKUA+UgTjlQDuKUA+UgTjlQDuKUA+UgTjlQDuKUA+Ug7jb+Txry8vrW0NFMeH56bP8gT7rJ+KsJKTZxLN1Kko0j6SzGEk0k0w1pB8vY7TKdRY5y9DGLA+0nJEE5ulxGioQkGAdfpfVx9JqNQeNn1/Q9x5LHrvErd+pTSPwiWOOzGAwHuWQiDWq3HDMPaIpZHEt3Rq3fc/CF8o0jaTb2l5hEGh1H0ov0xdo830bHMSVvNsb3p1kkGwefyTiYZBwYB3HKgXIQpxwoB3HKgXIQpxwoB3HKgXIQpxwoB3HKgXIQpxwoB3HKgXIQpxwoB3HKgXLsdt9//TCEkFrlsI+QWuMY+mEiC5Ubx8A+lig6DglZou44JOSs6uOQkBnGISFe51jAXeoB5fjAN7pjxnGChAyM4zQJMY4ziidEOc7vo+xEjGORmvswjqUK7sM4AqrdpRpHWJ2EGMcliiTEOC7XfUKM4yp9J8Q4VtBrQoxjHV3uwzhW098lxjhW1lNCjGN93STEOLbSQUKMY0PZE2Icm8ubEOPY3J+fvzf/HNu43ea/5V3eWQyUYyvZl7HbKccGOpiFcmyim2Uox5p6moVyrKm/ZbghXUeXy3BZuVavs3BZuVbfy1COC3U/C+W4UJFlKEdMnVkoR0y1ZfhWdqmCy3BZOa/mLFxWzqu8DOWYVHwWymEZZ3gn2AeCMeadYP9ZxgHj+McyjrmsmMWk6uUQjBl1y2EWZxUth2UsUa4cZrFcrXJYRkihcVhGVKFxEGUceJ2DOOVAOYhTDpSDOOVAOYhTDpSDOOVAOYhTDpSDOOVgUrm3CU55eX0b/9Xz06PVKMe7g2Wc/JOCjOPEMgbHi6mm+jjmF1B8H6XHseS5X/IxvSo9DuYZB5OMA+MgLlk51r09XPJK15KPWW7d499ao+NY9ymZMf+JGjmMr9LoOGas/sU3tYDVl7H6kW8t3zi2cLyD1ZeR0c3d/UOzxz3/pZbo+Ut6Iol/Kjs84o1PJN2lZKzpclT46VfL4279nqPlx+56jZ9d6+PgCyUYR+NfXhdr/7xav+cYS31zN9b+LAYJyrGX5TGdl+gsMpVjL2lCEs1ikHIcuVaSbhN7ucfBpjLdc/DJjINJxoFxEKccKAdxyoFyEKccKAdxyoFyEKccKAdxyoFyEKccKAdxyoFyEPcXUZ7ZudL4EakAAAAASUVORK5CYII=">
+<style>
+  :root{--bg:#0f1115;--card:#1a1d24;--line:#2a2f3a;--txt:#e9ecf2;--mut:#8b93a5;--go:#22c55e;--stop:#ef4444;--rs:#3b82f6}
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none}
+  html,body{background:var(--bg)}
+  body{margin:0;color:var(--txt);font:16px/1.4 -apple-system,system-ui,sans-serif;
+       padding:calc(env(safe-area-inset-top) + 14px) 16px calc(env(safe-area-inset-bottom) + 24px)}
+  .wrap{max-width:440px;margin:0 auto}
+  header{display:flex;align-items:center;justify-content:space-between;margin:4px 0 16px}
+  h1{font-size:22px;margin:0}
+  .gear{background:none;border:0;color:var(--mut);font-size:26px;padding:4px 8px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;margin-bottom:14px}
+  label{display:block;color:var(--mut);font-size:14px;margin-bottom:8px}
+  select,input[type=text]{width:100%;background:var(--bg);color:var(--txt);border:1px solid var(--line);border-radius:12px;padding:12px;font-size:17px;-webkit-user-select:text;user-select:text}
+  .count{display:flex;align-items:center;gap:10px}
+  .count button{width:58px;height:58px;border-radius:14px;border:1px solid var(--line);background:var(--bg);color:var(--txt);font-size:28px}
+  .count input{flex:1;min-width:0;height:58px;text-align:center;font-size:30px;font-weight:700;background:var(--bg);color:var(--txt);border:1px solid var(--line);border-radius:14px;-webkit-user-select:text;user-select:text}
+  .chips{display:flex;gap:8px;margin-top:12px}
+  .chips button{flex:1;padding:10px 0;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--txt);font-size:15px}
+  .chips button.on{background:var(--txt);color:var(--bg)}
+  .btn{display:block;width:100%;border:0;color:#fff;font-weight:700;font-size:19px;padding:18px;border-radius:16px;margin-top:12px}
+  .btn:active{opacity:.7}
+  .btn:disabled{opacity:.5}
+  .go{background:var(--go)} .stop{background:var(--stop)} .rs{background:var(--rs)} .sec{background:var(--line)}
+  .row{display:flex;gap:10px} .row .btn{flex:1}
+  #log{color:var(--mut);font-size:13px;margin-top:6px;min-height:18px;text-align:center}
+  #toast{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom) + 28px);transform:translateX(-50%) translateY(120px);
+         background:var(--txt);color:var(--bg);padding:12px 18px;border-radius:999px;font-weight:600;transition:transform .25s;white-space:nowrap}
+  #toast.show{transform:translateX(-50%) translateY(0)}
+  #toast.err{background:var(--stop);color:#fff}
+  .hide{display:none}
+  .hint{color:var(--mut);font-size:13px;margin:10px 0 0}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>📱 Điều khiển iPhone</h1>
+    <button class="gear" id="gear" aria-label="Cài đặt">⚙︎</button>
+  </header>
+
+  <!-- CÀI ĐẶT -->
+  <div id="setup" class="card hide">
+    <label for="topic">Link hoặc mã kênh ntfy</label>
+    <input type="text" id="topic" placeholder="rs-xxxxxxxx hoặc dán cả link" autocomplete="off" autocapitalize="off" spellcheck="false">
+    <label for="scripts" style="margin-top:14px">Danh sách script (cách nhau bằng dấu phẩy)</label>
+    <input type="text" id="scripts" autocomplete="off" autocapitalize="off" spellcheck="false">
+    <button class="btn go" id="saveSetup">Lưu</button>
+    <p class="hint">Mã kênh chỉ lưu trên máy này, không nằm trong file app.</p>
+  </div>
+
+  <!-- ĐIỀU KHIỂN -->
+  <div id="main">
+    <div class="card">
+      <label for="script">Script</label>
+      <select id="script"></select>
+    </div>
+
+    <div class="card">
+      <label for="n">Số lần chạy</label>
+      <div class="count">
+        <button type="button" id="minus" aria-label="Giảm">−</button>
+        <input id="n" type="number" inputmode="numeric" min="1" max="1000" value="10">
+        <button type="button" id="plus" aria-label="Tăng">+</button>
+      </div>
+      <div class="chips" id="chips">
+        <button type="button" data-v="1">1</button>
+        <button type="button" data-v="5">5</button>
+        <button type="button" data-v="10">10</button>
+        <button type="button" data-v="20">20</button>
+        <button type="button" data-v="50">50</button>
+      </div>
+      <label for="rest" style="margin-top:16px">Nghỉ giữa mỗi lần (giây)</label>
+      <div class="count">
+        <button type="button" id="rminus" aria-label="Giảm">−</button>
+        <input id="rest" type="number" inputmode="numeric" min="0" max="3600" value="3">
+        <button type="button" id="rplus" aria-label="Tăng">+</button>
+      </div>
+      <button class="btn go" id="run">▶ Chạy</button>
+    </div>
+
+    <div class="row">
+      <button class="btn stop" id="stop">■ Dừng</button>
+      <button class="btn rs" id="respring">↻ Respring</button>
+    </div>
+    <div id="log"></div>
+  </div>
+</div>
+<div id="toast"></div>
+
+<script>
+  const $ = id => document.getElementById(id);
+  const store = {
+    get(k, d){ try{ const v = localStorage.getItem(k); return v === null ? d : v; }catch(e){ return d; } },
+    set(k, v){ try{ localStorage.setItem(k, v); }catch(e){} }
+  };
+  let topic = store.get("topic", "");
+  let scripts = store.get("scripts", "shopee,test,a,bao+capcha");
+
+  function toast(msg, err){
+    const t = $("toast"); t.textContent = msg; t.className = err ? "show err" : "show";
+    clearTimeout(toast._t); toast._t = setTimeout(() => t.className = err ? "err" : "", 2200);
+  }
+  function parseTopic(s){
+    s = (s || "").trim();
+    const m = s.match(/ntfy\.sh\/([A-Za-z0-9_-]+)/);
+    return m ? m[1] : s.replace(/[^A-Za-z0-9_-]/g, "");
+  }
+  function fillScripts(){
+    const sel = $("script"), keep = store.get("s", "");
+    sel.innerHTML = "";
+    scripts.split(",").map(x => x.trim()).filter(Boolean).forEach(name => {
+      const o = document.createElement("option"); o.value = name; o.textContent = name + ".lua"; sel.appendChild(o);
+    });
+    if (keep && [...sel.options].some(o => o.value === keep)) sel.value = keep;
+  }
+  function showSetup(on){
+    $("setup").classList.toggle("hide", !on);
+    $("main").classList.toggle("hide", on);
+    $("topic").value = topic; $("scripts").value = scripts;
+  }
+  function clamp(){
+    let v = parseInt($("n").value, 10);
+    if (isNaN(v) || v < 1) v = 1; if (v > 1000) v = 1000;
+    $("n").value = v; return v;
+  }
+  function clampRest(){
+    let r = parseInt($("rest").value, 10);
+    if (isNaN(r) || r < 0) r = 0; if (r > 3600) r = 3600;
+    $("rest").value = r; return r;
+  }
+  function update(){
+    const v = clamp(); const r = clampRest(); store.set("rest", r);
+    $("run").textContent = "▶ Chạy " + $("script").value + " × " + v + " (nghỉ " + r + "s)";
+    document.querySelectorAll("#chips button").forEach(b => b.classList.toggle("on", +b.dataset.v === v));
+    store.set("n", v); store.set("s", $("script").value);
+  }
+
+  async function send(msg, label, btn){
+    if (!topic){ showSetup(true); toast("Nhập mã kênh trước", true); return; }
+    btn.disabled = true;
+    try{
+      const r = await fetch("https://ntfy.sh/" + topic, { method: "POST", body: msg });
+      if (!r.ok) throw new Error("HTTP " + r.status);
+      toast("✓ " + label);
+      $("log").textContent = new Date().toLocaleTimeString("vi-VN") + " — đã gửi: " + msg + " (iPhone nhận trong ~15 giây)";
+    }catch(e){
+      toast("Gửi lỗi, kiểm tra mạng", true);
+      $("log").textContent = "Lỗi: " + e.message;
+    }finally{ btn.disabled = false; }
+  }
+
+  $("gear").onclick = () => showSetup($("setup").classList.contains("hide"));
+  $("saveSetup").onclick = () => {
+    const t = parseTopic($("topic").value);
+    if (!t){ toast("Mã kênh không hợp lệ", true); return; }
+    topic = t; store.set("topic", t);
+    scripts = $("scripts").value.trim() || "shopee"; store.set("scripts", scripts);
+    fillScripts(); update(); showSetup(false); toast("Đã lưu");
+  };
+  $("minus").onclick = () => { $("n").value = clamp() - 1; update(); };
+  $("plus").onclick  = () => { $("n").value = clamp() + 1; update(); };
+  $("chips").onclick = e => { if (e.target.dataset.v){ $("n").value = e.target.dataset.v; update(); } };
+  $("n").addEventListener("input", () => { if ($("n").value !== "") update(); });
+  $("n").addEventListener("blur", update);
+  $("script").addEventListener("change", update);
+  $("run").onclick = () => send($("script").value + "-" + clamp() + "-" + clampRest(), "Đã gửi lệnh chạy", $("run"));
+  $("rminus").onclick = () => { $("rest").value = clampRest() - 1; update(); };
+  $("rplus").onclick  = () => { $("rest").value = clampRest() + 1; update(); };
+  $("rest").addEventListener("input", () => { if ($("rest").value !== "") update(); });
+  $("rest").addEventListener("blur", update);
+  $("stop").onclick = () => send("stop", "Đã gửi lệnh dừng", $("stop"));
+  $("respring").onclick = () => send("respring", "Đã gửi lệnh respring", $("respring"));
+
+  $("n").value = store.get("n", "10");
+  $("rest").value = store.get("rest", "3");
+  fillScripts(); update();
+  if (!topic) showSetup(true);
+</script>
+</body>
+</html>
