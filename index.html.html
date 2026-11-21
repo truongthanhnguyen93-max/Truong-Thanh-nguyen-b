@@ -109,6 +109,7 @@
       <button class="btn sec" id="status">📊 Kiểm tra</button>
       <button class="btn warn" id="reboot">♻️ Userspace Reboot</button>
     </div>
+    <button class="btn" style="background:#0891b2" id="exitsafe">🛟 Thoát Safe Mode</button>
     <div id="log"></div>
 
     <div class="card" style="margin-top:14px">
@@ -204,6 +205,7 @@
   $("stop").onclick = () => send("stop", "Đã gửi lệnh dừng", $("stop"));
   $("respring").onclick = () => send("respring", "Đã gửi lệnh respring", $("respring"));
   $("status").onclick = () => send("status", "Đang hỏi trạng thái…", $("status"));
+  $("exitsafe").onclick = () => send("exitsafe", "Đã gửi lệnh thoát Safe Mode", $("exitsafe"));
 
   // Userspace Reboot: bấm 2 lần để tránh bấm nhầm
   let armT = null;
