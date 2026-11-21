@@ -33,7 +33,17 @@
   .btn{display:block;width:100%;border:0;color:#fff;font-weight:700;font-size:19px;padding:18px;border-radius:16px;margin-top:12px}
   .btn:active{opacity:.7}
   .btn:disabled{opacity:.5}
-  .go{background:var(--go)} .stop{background:var(--stop)} .rs{background:var(--rs)} .sec{background:var(--line)}
+  .go{background:var(--go)} .stop{background:var(--stop)} .rs{background:var(--rs)} .sec{background:#374151} .warn{background:#9333ea}
+  .warn.armed{background:#f59e0b}
+  #noti{max-height:340px;overflow-y:auto}
+  .ni{display:flex;gap:10px;padding:10px 0;border-top:1px solid var(--line);font-size:15px;-webkit-user-select:text;user-select:text}
+  .ni:first-child{border-top:0}
+  .ni time{color:var(--mut);font-size:13px;min-width:58px;padding-top:1px}
+  .ni.new{animation:flash 1.2s}
+  @keyframes flash{from{background:#22c55e33}to{background:transparent}}
+  .empty{color:var(--mut);font-size:14px}
+  .nh{display:flex;justify-content:space-between;align-items:center}
+  .nh button{background:none;border:0;color:var(--mut);font-size:13px}
   .row{display:flex;gap:10px} .row .btn{flex:1}
   #log{color:var(--mut);font-size:13px;margin-top:6px;min-height:18px;text-align:center}
   #toast{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom) + 28px);transform:translateX(-50%) translateY(120px);
@@ -95,7 +105,16 @@
       <button class="btn stop" id="stop">■ Dừng</button>
       <button class="btn rs" id="respring">↻ Respring</button>
     </div>
+    <div class="row">
+      <button class="btn sec" id="status">📊 Kiểm tra</button>
+      <button class="btn warn" id="reboot">♻️ Userspace Reboot</button>
+    </div>
     <div id="log"></div>
+
+    <div class="card" style="margin-top:14px">
+      <div class="nh"><label style="margin:0">🔔 Thông báo từ iPhone</label><button type="button" id="clearNoti">Xóa</button></div>
+      <div id="noti"><div class="empty">Chưa có thông báo.</div></div>
+    </div>
   </div>
 </div>
 <div id="toast"></div>
@@ -166,6 +185,7 @@
   $("saveSetup").onclick = () => {
     const t = parseTopic($("topic").value);
     if (!t){ toast("Mã kênh không hợp lệ", true); return; }
+    if (t !== topic){ store.set("lastId", ""); store.set("hist", "[]"); lastId = ""; hist = []; renderNoti(); }
     topic = t; store.set("topic", t);
     scripts = $("scripts").value.trim() || "shopee"; store.set("scripts", scripts);
     fillScripts(); update(); showSetup(false); toast("Đã lưu");
@@ -183,6 +203,56 @@
   $("rest").addEventListener("blur", update);
   $("stop").onclick = () => send("stop", "Đã gửi lệnh dừng", $("stop"));
   $("respring").onclick = () => send("respring", "Đã gửi lệnh respring", $("respring"));
+  $("status").onclick = () => send("status", "Đang hỏi trạng thái…", $("status"));
+
+  // Userspace Reboot: bấm 2 lần để tránh bấm nhầm
+  let armT = null;
+  $("reboot").onclick = () => {
+    const b = $("reboot");
+    if (!b.classList.contains("armed")){
+      b.classList.add("armed"); b.textContent = "Bấm lần nữa để reboot";
+      armT = setTimeout(() => { b.classList.remove("armed"); b.textContent = "♻️ Userspace Reboot"; }, 3000);
+      return;
+    }
+    clearTimeout(armT); b.classList.remove("armed"); b.textContent = "♻️ Userspace Reboot";
+    send("reboot", "Đã gửi lệnh reboot", b);
+  };
+
+  // ---- Thông báo ngược từ iPhone (kênh TOPIC-r) ----
+  let lastId = store.get("lastId", "");
+  let hist = []; try{ hist = JSON.parse(store.get("hist", "[]")) || []; }catch(e){ hist = []; }
+  function esc(x){ return String(x).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
+  function renderNoti(newIds){
+    const box = $("noti");
+    if (!hist.length){ box.innerHTML = '<div class="empty">Chưa có thông báo.</div>'; return; }
+    box.innerHTML = hist.map(m => {
+      const d = new Date(m.t * 1000);
+      const tm = d.toLocaleTimeString("vi-VN", {hour:"2-digit", minute:"2-digit", second:"2-digit"});
+      return '<div class="ni' + (newIds && newIds.includes(m.id) ? ' new' : '') + '"><time>' + tm + '</time><div>' + esc(m.m) + '</div></div>';
+    }).join("");
+  }
+  async function poll(){
+    if (!topic || document.hidden) return;
+    try{
+      const r = await fetch("https://ntfy.sh/" + topic + "-r/json?poll=1&since=" + (lastId || "6h"));
+      const txt = await r.text();
+      const msgs = txt.split("\n").filter(Boolean).map(l => { try{ return JSON.parse(l); }catch(e){ return null; } })
+                      .filter(m => m && m.event === "message" && !hist.some(h => h.id === m.id));
+      if (!msgs.length) return;
+      const live = !!lastId;
+      msgs.forEach(m => hist.unshift({id: m.id, t: m.time, m: m.message}));
+      hist = hist.slice(0, 40);
+      lastId = msgs[msgs.length - 1].id;
+      store.set("lastId", lastId); store.set("hist", JSON.stringify(hist));
+      renderNoti(msgs.map(m => m.id));
+      if (live) toast(msgs[msgs.length - 1].message);
+    }catch(e){}
+  }
+  $("clearNoti").onclick = () => { hist = []; store.set("hist", "[]"); renderNoti(); };
+  renderNoti();
+  setInterval(poll, 4000);
+  document.addEventListener("visibilitychange", () => { if (!document.hidden) poll(); });
+  poll();
 
   $("n").value = store.get("n", "10");
   $("rest").value = store.get("rest", "3");
