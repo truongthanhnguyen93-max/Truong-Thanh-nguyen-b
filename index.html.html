@@ -44,6 +44,14 @@
   .empty{color:var(--mut);font-size:14px}
   .nh{display:flex;justify-content:space-between;align-items:center}
   .nh button{background:none;border:0;color:var(--mut);font-size:13px}
+  .step{display:flex;align-items:center;gap:8px;padding:10px 0;border-top:1px solid var(--line);font-size:16px}
+  .step:first-child{border-top:0}
+  .step .no{color:var(--mut);min-width:22px}
+  .step .tx{flex:1}
+  .step button{background:var(--bg);border:1px solid var(--line);color:var(--txt);border-radius:10px;width:38px;height:34px;font-size:15px}
+  .addrow{display:flex;gap:8px;margin-top:12px}
+  .addrow .btn{margin-top:0;font-size:16px;padding:14px}
+  .addrow input{width:90px;text-align:center;font-size:18px;background:var(--bg);color:var(--txt);border:1px solid var(--line);border-radius:12px;-webkit-user-select:text;user-select:text}
   .row{display:flex;gap:10px} .row .btn{flex:1}
   #log{color:var(--mut);font-size:13px;margin-top:6px;min-height:18px;text-align:center}
   #toast{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom) + 28px);transform:translateX(-50%) translateY(120px);
@@ -111,6 +119,19 @@
     </div>
     <button class="btn" style="background:#0891b2" id="exitsafe">🛟 Thoát Safe Mode</button>
     <div id="log"></div>
+
+    <div class="card" style="margin-top:14px">
+      <div class="nh"><label style="margin:0">⛓ Chuỗi lệnh (chạy nối tiếp)</label><button type="button" id="chainClear">Xóa hết</button></div>
+      <div id="chainList"></div>
+      <div class="addrow">
+        <button class="btn sec" id="addScript" style="flex:1">+ Thêm script đang chọn</button>
+      </div>
+      <div class="addrow">
+        <input id="waitSec" type="number" inputmode="numeric" min="1" max="86400" value="10">
+        <button class="btn sec" id="addWait" style="flex:1">+ Thêm chờ (giây)</button>
+      </div>
+      <button class="btn go" id="runChain">⛓ Chạy chuỗi</button>
+    </div>
 
     <div class="card" style="margin-top:14px">
       <div class="nh"><label style="margin:0">🔔 Thông báo từ iPhone</label><button type="button" id="clearNoti">Xóa</button></div>
@@ -219,6 +240,38 @@
     clearTimeout(armT); b.classList.remove("armed"); b.textContent = "♻️ Userspace Reboot";
     send("reboot", "Đã gửi lệnh reboot", b);
   };
+
+  // ---- Chuỗi lệnh ----
+  let chain = []; try{ chain = JSON.parse(store.get("chain", "[]")) || []; }catch(e){ chain = []; }
+  function saveChain(){ store.set("chain", JSON.stringify(chain)); }
+  function stepText(st){ return st.t === "wait" ? "⏳ Chờ " + st.s + " giây" : "▶ " + st.n + " × " + st.c + " (nghỉ " + st.r + "s)"; }
+  function stepCmd(st){ return st.t === "wait" ? "wait-" + st.s : st.n + "-" + st.c + "-" + st.r; }
+  function renderChain(){
+    const box = $("chainList");
+    if (!chain.length){ box.innerHTML = '<div class="empty">Chưa có bước nào. Chọn script, số lần, nghỉ ở trên rồi bấm "+ Thêm script đang chọn".</div>'; return; }
+    box.innerHTML = chain.map((st, i) =>
+      '<div class="step"><span class="no">' + (i + 1) + '.</span><span class="tx">' + esc(stepText(st)) + '</span>' +
+      (i > 0 ? '<button type="button" data-up="' + i + '">↑</button>' : '') +
+      '<button type="button" data-del="' + i + '">✕</button></div>').join("");
+  }
+  $("chainList").onclick = e => {
+    const up = e.target.dataset.up, del = e.target.dataset.del;
+    if (up !== undefined){ const i = +up; [chain[i - 1], chain[i]] = [chain[i], chain[i - 1]]; }
+    else if (del !== undefined){ chain.splice(+del, 1); }
+    else return;
+    saveChain(); renderChain();
+  };
+  $("addScript").onclick = () => { chain.push({t: "run", n: $("script").value, c: clamp(), r: clampRest()}); saveChain(); renderChain(); toast("Đã thêm " + $("script").value); };
+  $("addWait").onclick = () => {
+    let s = parseInt($("waitSec").value, 10); if (isNaN(s) || s < 1) s = 1; if (s > 86400) s = 86400;
+    chain.push({t: "wait", s}); saveChain(); renderChain(); toast("Đã thêm chờ " + s + "s");
+  };
+  $("chainClear").onclick = () => { chain = []; saveChain(); renderChain(); };
+  $("runChain").onclick = () => {
+    if (!chain.length){ toast("Chuỗi đang trống", true); return; }
+    send("chain:" + chain.map(stepCmd).join(","), "Đã gửi chuỗi " + chain.length + " bước", $("runChain"));
+  };
+  renderChain();
 
   // ---- Thông báo ngược từ iPhone (kênh TOPIC-r) ----
   let lastId = store.get("lastId", "");
